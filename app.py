@@ -19,7 +19,7 @@ def load_lottieurl(url):
 
 # lottie_formal = load_lottieurl("https://assets1.lottiefiles.com/packages/lf20_2szgjU.json")
 # Load model
-model = joblib.load("autism_model.joblib")
+model = joblib.load("model/autism_model.joblib")
 
 # Page Config
 st.set_page_config(page_title="Autism Detection Tool", page_icon="🧠", layout="wide")

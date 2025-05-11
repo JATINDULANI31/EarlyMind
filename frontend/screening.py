@@ -1,4 +1,5 @@
-elif page == "Screening Test":
+if page == "Screening Test":
+    st.query_params.update(page="Screening Test")
     st.markdown("""
         <style>
         div[data-baseweb="select"] > div {
