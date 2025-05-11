@@ -8,7 +8,7 @@ import base64
 from fpdf import FPDF
 from streamlit_lottie import st_lottie
 import requests
-
+from urllib.parse import urlencode
 # Load Lottie animation
 
 def load_lottieurl(url):
@@ -28,40 +28,60 @@ st.set_page_config(page_title="Autism Detection Tool", page_icon="🧠", layout=
 page = st.query_params.get("page", "Home")
 
 # Centered sidebar navigation using HTML
-st.sidebar.markdown(
-    """
-    <style>
-    .sidebar-center {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        margin-top: 50px;
-    }
-    .sidebar-title {
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 20px;
-    }
-    .nav-item {
-        font-size: 18px;
-        margin: 10px 0;
-    }
-    .nav-item a {
-        text-decoration: none;
-        color: white;
-    }
-    </style>
+st.sidebar.markdown("""
+<style>
+.sidebar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+}
+.sidebar-title {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    background: linear-gradient(90deg, #ff6ec4, #7873f5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: 500;
+    padding: 8px 15px;
+    margin: 5px 0;
+    color: #eeeeee;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-weight: 600;
+}
+.nav-icon {
+    margin-right: 8px;
+}
+</style>
 
-    <div class="sidebar-center">
-        <div class="sidebar-title">📍 Navigation</div>
-        <div class="nav-item">🏠 <a href="?page=Home" target="_self">Home</a></div>
-        <div class="nav-item">🧪 <a href="?page=Screening+Test" target="_self">Screening Test</a></div>
-        <div class="nav-item">📊 <a href="?page=About+the+Model" target="_self">About the Model</a></div>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+<div class="sidebar-container">
+    <div class="sidebar-title">🧠 EarlyMind</div>
+    <a href="?page=Home" target="_self" class="nav-link">
+        <span class="nav-icon">🏠</span> Home
+    </a>
+    <a href="?page=Screening+Test" target="_self" class="nav-link">
+        <span class="nav-icon">🧪</span> Screening Test
+    </a>
+    <a href="?page=About+the+Model" target="_self" class="nav-link">
+        <span class="nav-icon">📊</span> About the Model
+    </a>
+</div>
+""", unsafe_allow_html=True)
+
+
 
 # CSS Styling
 st.markdown("""
@@ -96,37 +116,209 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# Add space before GitHub block
+for _ in range(2):
+    st.sidebar.markdown(' ')
+
+# GitHub Link Block
+st.sidebar.markdown('<h3 style="text-align: center; color: grey; font-size: 20px;">Check out the whole project implementation in my GitHub repo.</h3>', unsafe_allow_html=True)
+st.sidebar.markdown("""
+    <div style='text-align: center;'>
+        <a href="https://github.com/JATINDULANI31" target="_blank">
+            <button style="padding: 10px 20px; background-color: black; color: white; border: none; border-radius: 5px; cursor: pointer;">Go to GitHub</button>
+        </a>
+    </div>
+""", unsafe_allow_html=True)
+
+# Add space before feedback
+for _ in range(2):
+    st.sidebar.markdown(' ')
+
+# Feedback Section
+st.sidebar.markdown('<h1 style="text-align: center;">FEEDBACK</h1>', unsafe_allow_html=True)
+with st.sidebar.form(key='jatin_feedback_form', clear_on_submit=True):
+    rating = st.slider("Please rate the app", min_value=1, max_value=5, value=1, help='Drag the slider to rate the app. This is a 1-5 rating scale where 5 is the highest rating')
+    text = st.text_input(label='Please leave your feedback here')
+    submitted = st.form_submit_button('Submit')
+
+    if submitted:
+        st.sidebar.success("Thanks for your feedback!")
+        st.sidebar.markdown('**Your Rating:**')
+        st.sidebar.markdown(f"{rating}")
+        st.sidebar.markdown('**Your Feedback:**')
+        st.sidebar.markdown(f"{text}")
+
 # Home Page
 if page == "Home":
-    st.markdown("<div class='title-line'>🧠 Early Autism Detection Tool</div>", unsafe_allow_html=True)
+    st.query_params.update(page="Home")
+    st.markdown("""
+        <style>
+            .title-line {
+                font-size: 38px;
+                font-weight: bold;
+                text-align: center;
+                margin-bottom: 10px;
+                letter-spacing: 1px;
+                background: linear-gradient(90deg, #ff6ec4, #7873f5);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            .subtitle {
+                font-size: 20px;
+                font-weight: 500;
+                text-align: center;
+                color: #bbbbbb;
+                margin-bottom: 35px;
+            }
+            .section-heading {
+                text-align: center;
+                font-size: 24px;
+                color: #ffffff;
+                margin-top: 40px;
+                margin-bottom: 15px;
+                font-weight: 600;
+            }
+            .description {
+                text-align: justify;
+                font-size: 17px;
+                line-height: 1.7;
+                color: #dddddd;
+                padding: 0 20px;
+            }
+            .divider {
+                border-bottom: 1px solid #88888833;
+                margin: 40px auto;
+                width: 90%;
+            }
+            .feature-list {
+                list-style: none;
+                padding-left: 0;
+                font-size: 17px;
+                color: #dddddd;
+                line-height: 1.8;
+            }
+            .feature-list li::before {
+                content: "✅ ";
+            }
+            .faq-list li::before {
+                content: "❓ ";
+            }
+            .cta-button {
+                display: flex;
+                justify-content: center;
+                margin-top: 40px;
+            }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # Title & Tagline
+    st.markdown("<div class='title-line'>🧠 EarlyMind</div>", unsafe_allow_html=True)
+    st.markdown("<div class='subtitle'>Your AI Companion for Early Autism Awareness</div>", unsafe_allow_html=True)
+
+    # About EarlyMind
+    st.markdown("<div class='section-heading'>About EarlyMind</div>", unsafe_allow_html=True)
+    st.markdown("""
+        <div class="description">
+            <b>EarlyMind</b> is an AI-powered screening tool developed to help parents, caregivers, and educators recognize early signs of autism in toddlers.
+            By answering a set of behavioral questions inspired by the Q-Chat-10 questionnaire, users receive instant, research-backed predictions. 
+            Although not a substitute for a professional diagnosis, EarlyMind offers a supportive first step toward seeking timely intervention and expert help.
+        </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("<div class='divider'></div>", unsafe_allow_html=True)
+
+    # What is Autism? (Fixed Layout)
+    st.markdown("<div class='section-heading'>What is Autism?</div>", unsafe_allow_html=True)
+
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         st.image("aut_img.png", use_container_width=True)
 
-    st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)
-    st.markdown('<h3 style="text-align: center;">What is Autism?</h3>', unsafe_allow_html=True)
+    st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
+
     st.markdown("""
         <div class="description">
-        Autism, or Autism Spectrum Disorder (ASD), is a developmental disorder that affects communication, behavior,
-        and social interactions. Early detection plays a crucial role in providing effective care and support. Recognizing
-        the signs early can help families seek interventions and therapies that improve developmental outcomes.
+            Autism, or Autism Spectrum Disorder (ASD), is a neurodevelopmental condition that affects communication, behavior, and social interaction.
+            The signs of autism typically appear early in life and vary widely from child to child. Recognizing these signs as early as possible
+            can make a significant difference. Early interventions and therapies have been shown to greatly improve outcomes and quality of life
+            for individuals on the spectrum.
         </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)
-    st.markdown('<h3 style="text-align: center;">About This App</h3>', unsafe_allow_html=True)
+    st.markdown("<div class='divider'></div>", unsafe_allow_html=True)
+
+    # How It Works
+    st.markdown("<div class='section-heading'>How EarlyMind Works</div>", unsafe_allow_html=True)
     st.markdown("""
         <div class="description">
-        This screening tool is designed for parents, caregivers, and educators to identify early signs of autism in toddlers.
-        By answering a set of behavioral questions, users can receive an AI-powered prediction based on trained data. While
-        this is not a clinical diagnosis, it can be a valuable first step in seeking professional support.
+            <b>Step 1 – Screening:</b> Answer a set of short behavioral and demographic questions.<br>
+            <b>Step 2 – AI Prediction:</b> Our model evaluates the responses based on Q-Chat-10 scoring logic.<br>
+            <b>Step 3 – Result:</b> You receive an autism likelihood score with next-step guidance.
         </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)
-    st.image("autism_awareness.png", use_container_width=True)
+    st.markdown("<div class='divider'></div>", unsafe_allow_html=True)
+
+    # Explore EarlyMind – Title
+    # Section Title
+    st.markdown("<div class='section-heading'>Explore EarlyMind</div>", unsafe_allow_html=True)
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
+    # Centered container layout
+    outer_left, center_col, outer_right = st.columns([1, 4, 1])
+
+    with center_col:
+        inner_col1, inner_col2 = st.columns(2)
+
+        with inner_col1:
+            st.markdown("""
+                <h4 style='font-size: 22px; text-align: center;'>🔑 Key Features</h4>
+                <ul style='font-size: 16px; line-height: 1.8; color: #dddddd; list-style: none; padding-left: 0;'>
+                    <li>✅ AI-Powered Prediction</li>
+                    <li>✅ Research-Backed Dataset</li>
+                    <li>✅ Behavioral + Demographic Screening</li>
+                    <li>✅ Simple Language & Mobile-Friendly UI</li>
+                    <li>✅ No Data Stored – 100% Privacy</li>
+                </ul>
+            """, unsafe_allow_html=True)
+
+        with inner_col2:
+            st.markdown("""
+                <h4 style='font-size: 22px; text-align: center;'>❓ FAQs</h4>
+                <ul style='font-size: 16px; line-height: 1.8; color: #dddddd; list-style: none; padding-left: 0;'>
+                    <li><b>❓ Is this a clinical diagnosis?</b><br>– No. This is a screening tool, not a substitute for medical evaluation.</li>
+                    <li><b>❓ Is my data stored?</b><br>– No. We do not store any of your responses.</li>
+                    <li><b>❓ Who can use EarlyMind?</b><br>– Parents, teachers, or caregivers looking to raise awareness.</li>
+                </ul>
+            """, unsafe_allow_html=True)
+
+
+    # CTA Button
+    st.markdown("<div class='section-heading'>Ready to Begin?</div>", unsafe_allow_html=True)
+    st.markdown("""
+        <style>
+            div.stButton > button:first-child {
+                background: linear-gradient(90deg, #a18cd1, #fbc2eb);
+                color: white;
+                border: none;
+                border-radius: 10px;
+                padding: 12px 25px;
+                font-size: 16px;
+                font-weight: 500;
+            }
+            div.stButton > button:first-child:hover {
+                background: linear-gradient(90deg, #fbc2eb, #a18cd1);
+            }
+        </style>
+    """, unsafe_allow_html=True)
+    col1, col2, col3 = st.columns([2, 1, 2])
+    with col2:
+        if st.button("🧠 Start Screening Now"):
+            st.query_params.update(page="Screening Test")
+            st.rerun()
 
 elif page == "Screening Test":
+    st.query_params.update(page="Screening Test")
     st.markdown("""
         <style>
         div[data-baseweb="select"] > div {
@@ -297,8 +489,9 @@ elif page == "Screening Test":
         </div>
         """
         st.markdown(href, unsafe_allow_html=True)
-
+              
 elif page == "About the Model":
+    st.query_params.update(page="About the Model")
     st.markdown("""
         <style>
             .section {
@@ -380,6 +573,7 @@ elif page == "About the Model":
         </div>
     </div>
     """, unsafe_allow_html=True)
+    
 
 
 
