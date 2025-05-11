@@ -134,12 +134,18 @@ st.sidebar.markdown("""
 for _ in range(2):
     st.sidebar.markdown(' ')
 
-# Feedback Section
+
 st.sidebar.markdown('<h1 style="text-align: center;">FEEDBACK</h1>', unsafe_allow_html=True)
+
 with st.sidebar.form(key='jatin_feedback_form', clear_on_submit=True):
-    rating = st.slider("Please rate the app", min_value=1, max_value=5, value=1, help='Drag the slider to rate the app. This is a 1-5 rating scale where 5 is the highest rating')
+    rating = st.slider("Please rate the app", min_value=1, max_value=5, value=1,
+                       help='Drag the slider to rate the app. This is a 1–5 rating scale where 5 is the highest.')
     text = st.text_input(label='Please leave your feedback here')
-    submitted = st.form_submit_button('Submit')
+
+    # Center the submit button
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        submitted = st.form_submit_button('Submit')
 
     if submitted:
         st.sidebar.success("Thanks for your feedback!")
@@ -295,27 +301,37 @@ if page == "Home":
 
     # CTA Button
     st.markdown("<div class='section-heading'>Ready to Begin?</div>", unsafe_allow_html=True)
+    # Center-align button using full-width container + native button logic
     st.markdown("""
         <style>
-            div.stButton > button:first-child {
-                background: linear-gradient(90deg, #a18cd1, #fbc2eb);
-                color: white;
-                border: none;
-                border-radius: 10px;
-                padding: 12px 25px;
-                font-size: 16px;
-                font-weight: 500;
-            }
-            div.stButton > button:first-child:hover {
-                background: linear-gradient(90deg, #fbc2eb, #a18cd1);
-            }
+        .center-btn-wrapper {
+            text-align: center;
+            margin-top: 0px;
+            margin-bottom: 10px;
+        }
+        .center-btn-wrapper button {
+            background: linear-gradient(90deg, #a18cd1, #fbc2eb);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .center-btn-wrapper button:hover {
+            background: linear-gradient(90deg, #fbc2eb, #a18cd1);
+        }
         </style>
+
+        <div class="center-btn-wrapper">
+            <form action="/" method="get">
+                <input type="hidden" name="page" value="Screening Test">
+                <button type="submit">🧠 Start Screening Now</button>
+            </form>
+        </div>
     """, unsafe_allow_html=True)
-    col1, col2, col3 = st.columns([2, 1, 2])
-    with col2:
-        if st.button("🧠 Start Screening Now"):
-            st.query_params.update(page="Screening Test")
-            st.rerun()
+
 
 elif page == "Screening Test":
     st.query_params.update(page="Screening Test")
