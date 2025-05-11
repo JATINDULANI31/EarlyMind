@@ -142,9 +142,9 @@ with st.sidebar.form(key='jatin_feedback_form', clear_on_submit=True):
                        help='Drag the slider to rate the app. This is a 1–5 rating scale where 5 is the highest.')
     text = st.text_input(label='Please leave your feedback here')
 
-    # Center the submit button
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
+    # Trick to center button using 5-column layout
+    c1, c2, c3, c4, c5 = st.columns([1, 1, 2, 1, 1])
+    with c3:
         submitted = st.form_submit_button('Submit')
 
     if submitted:
