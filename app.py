@@ -563,11 +563,15 @@ elif page == "About the Model":
     st.markdown("<h2>🛠️ Model Training & Improvements</h2>", unsafe_allow_html=True)
     st.markdown("""
         <div class="section-text">
-            Initially, the model exhibited <b>overfitting</b> and yielded an accuracy of just <b>83.4%</b> on validation data. To enhance performance, we implemented several optimizations including hyperparameter tuning for model refinement, noise reduction through thorough feature analysis, and SMOTE-based class balancing to address data imbalance. These steps resulted in a significant improvement, achieving a final validation accuracy of <b>99%</b>.
+            Initially, the model was trained on a small dataset of around <b>1,000 entries</b> and achieved <b>100% accuracy</b>, which clearly indicated <b>overfitting</b>. 
+            To address this, we combined the dataset with <b>6,000 additional entries</b> and applied basic <b>undersampling</b> to balance the classes. 
+            This brought the validation accuracy down to a more realistic <b>83.4%</b>. 
+            To further improve generalization, we implemented <b>SMOTEENN</b> (a hybrid of oversampling and noise reduction), along with <b>hyperparameter tuning</b> and <b>feature importance analysis</b>. 
+            These enhancements significantly improved performance, resulting in a final validation accuracy of <b>99%</b>.
         </div>
-    </div>
-    <div class="divider"></div>
+        <div class="divider"></div>
     """, unsafe_allow_html=True)
+
 
     # Features Used
     st.markdown('<div class="section">', unsafe_allow_html=True)
