@@ -124,7 +124,7 @@ for _ in range(2):
 st.sidebar.markdown('<h3 style="text-align: center; color: grey; font-size: 20px;">Check out the whole project implementation in my GitHub repo.</h3>', unsafe_allow_html=True)
 st.sidebar.markdown("""
     <div style='text-align: center;'>
-        <a href="https://github.com/JATINDULANI31" target="_blank">
+        <a href="https://github.com/JATINDULANI31/EarlyMind" target="_blank">
             <button style="padding: 10px 20px; background-color: black; color: white; border: none; border-radius: 5px; cursor: pointer;">Go to GitHub</button>
         </a>
     </div>
