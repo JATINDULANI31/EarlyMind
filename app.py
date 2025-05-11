@@ -22,7 +22,7 @@ def load_lottieurl(url):
 model = joblib.load("model/autism_model.joblib")
 
 # Page Config
-st.set_page_config(page_title="Autism Detection Tool", page_icon="🧠", layout="wide")
+st.set_page_config(page_title="EarlyMind", page_icon="🧠", layout="wide")
 
 # Read page from query param
 page = st.query_params.get("page", "Home")
